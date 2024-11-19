@@ -144,9 +144,10 @@ const MyAppointments = () => {
     try {
       const stripe: Stripe | null = await stripePromise;
 
+      const backenUrl = import.meta.env.VITE_BACKEND_URL;
       // Call your backend to create the Checkout session
       const response = await axios.get(
-        `http://localhost:4000/api/user/checkout-session/${appointmentId}`,
+        `${backenUrl}/api/user/checkout-session/${appointmentId}`,
         {
           headers: {
             "Content-Type": "application/json",
