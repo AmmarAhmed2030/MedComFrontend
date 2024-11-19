@@ -1,3 +1,7 @@
+# Environment variables
+.env
+.env.*  # For environment-specific files like .env.production
+
 # Logs
 logs
 *.log
@@ -7,18 +11,33 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependency directories
 node_modules
+
+# Build outputs
 dist
 dist-ssr
+
+# Local files
 *.local
+
+# OS-specific files
+.DS_Store
 
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
 .idea
-.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# Other project-specific files
+coverage  # Ignore test coverage reports
+*.pid     # Ignore process ID files
+
+# Temporary files
+*.tmp
+*.temp
