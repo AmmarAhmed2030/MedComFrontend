@@ -305,14 +305,9 @@ export const useAuthUser = create<UserState>((set) => ({
       set({ loading: false });
       console.log("getting profile error", error);
       if (axios.isAxiosError(error)) {
-        toast.dismiss();
-        toast.error(
-          "Get Profile failed: " +
-            (error.response?.data.message || error.message)
-        );
+        set({ user: null });
       } else {
-        toast.dismiss();
-        toast.error("An unexpected error occurred");
+        set({ user: null });
       }
     }
   },

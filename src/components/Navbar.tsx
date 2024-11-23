@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 const Navbar = () => {
   const navigate = useNavigate();
   const [showMenue, setShowMenue] = useState(false);
-  const { logout, userToken, user, getProfile } = useAuthUser();
+  const { logout, user, getProfile } = useAuthUser();
   const adminURL = import.meta.env.VITE_ADMIN_URL;
   useEffect(() => {
     getProfile();
@@ -42,7 +42,7 @@ const Navbar = () => {
         </NavLink>
       </ul>
       <div className="flex items-center gap-4">
-        {userToken ? (
+        {user ? (
           <div className="flex items-center gap-2 cursor-pointer group relative">
             {user?.image ? (
               <img
