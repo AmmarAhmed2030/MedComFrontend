@@ -56,10 +56,12 @@ const UpdateProfile = () => {
   const navigate = useNavigate();
   const [docImg, setDocImg] = useState<File | null>(null);
   const [updateLoading, setUpdateLoading] = useState<boolean>(false);
-  const { user, userToken, setUser, getProfile, loading } = useAuthUser(); // Fetch Zustand state and updateProfile function
+  const { user, userToken, setUser, getProfile, loading } = useAuthUser();
+
   useEffect(() => {
     getProfile();
   }, [getProfile]);
+
   const {
     register,
     handleSubmit,
@@ -100,22 +102,17 @@ const UpdateProfile = () => {
         phone: data.phone,
         address: data.address,
         gender: data.gender,
-        dob: data.dob.toISOString(), // Ensure dob is formatted as a string
-        image: response.data.image || user?.image, // You can update the image URL from the response if needed
+        dob: data.dob.toISOString(),
+        image: response.data.image || user?.image,
       });
       toast.success("Profile Updated successfully");
       setUpdateLoading(false);
-
       navigate("/my-profile");
-      console.log("Profile Updated successfully:", response.data);
     } catch (error: unknown) {
       setUpdateLoading(false);
-
-      // Check if the error is an AxiosError
       if (axios.isAxiosError(error)) {
         if (error.response) {
           const status = error.response.status;
-          // Check for specific error status codes
           if (status === 400) {
             toast.error("Bad Request: " + error.response.data.message);
           } else if (status === 401) {
@@ -126,27 +123,21 @@ const UpdateProfile = () => {
             toast.error("Error: " + error.response.data.message);
           }
         } else if (error.request) {
-          // Handle network errors with no response from server
           toast.error("No response from server. Please check your network.");
         } else {
-          // Errors triggered during request setup
           toast.error("Request Error: " + error.message);
         }
       } else if (error instanceof Error) {
-        // Handle other non-Axios errors
         toast.error("An unexpected error occurred: " + error.message);
       } else {
-        // Fallback for unexpected error types
         toast.error("An unknown error occurred.");
       }
-
-      console.error("Error: ", error);
     }
   };
 
   return loading ? (
     <Loader />
-  ) : (
+  ) : user ? (
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="max-w-2xl flex flex-col gap-2 text-sm mx-auto"
@@ -157,13 +148,13 @@ const UpdateProfile = () => {
             <img
               src={assets.upload_area}
               alt=""
-              className="w-16 h-16  rounded-full cursor-pointer"
+              className="w-16 h-16 rounded-full cursor-pointer"
             />
           ) : (
             <img
               src={docImg ? URL.createObjectURL(docImg) : user?.image}
               alt=""
-              className="w-16 h-16  rounded-full cursor-pointer"
+              className="w-16 h-16 rounded-full cursor-pointer"
             />
           )}
         </label>
@@ -174,7 +165,7 @@ const UpdateProfile = () => {
           accept="image/*"
           onChange={(e) => {
             const file = e.target.files?.[0];
-            if (file) setDocImg(file); // Update the selected image
+            if (file) setDocImg(file);
           }}
         />
         <p>
@@ -184,7 +175,6 @@ const UpdateProfile = () => {
         </p>
       </div>
 
-      {/* Name Input */}
       <input
         className="border border-zinc-300 rounded w-full p-2 mt-4"
         type="text"
@@ -197,13 +187,10 @@ const UpdateProfile = () => {
 
       <hr className="bg-zinc-400 border-none h-[1px]" />
 
-      {/* Contact Information */}
       <div>
         <p className="text-neutral-500 underline mt-3">CONTACT INFORMATION</p>
         <div className="grid grid-cols-[1fr_3fr] gap-y-2.5 mt-3 text-neutral-700">
           <p className="font-medium">Phone:</p>
-
-          {/* Phone Input */}
           <div className="flex flex-col">
             <input
               className="border border-zinc-300 rounded w-full p-2 mt-4"
@@ -217,13 +204,12 @@ const UpdateProfile = () => {
               </small>
             )}
           </div>
-          {/* Address Inputs */}
           <p className="font-medium">Address:</p>
           <div className="flex flex-col">
             <input
               className="border border-zinc-300 rounded w-full p-2 mt-4"
               type="text"
-              defaultValue={user?.address.line1}
+              defaultValue={user?.address?.line1 || ""}
               {...register("address.line1")}
             />
             {errors.address?.line1 && (
@@ -235,7 +221,7 @@ const UpdateProfile = () => {
             <input
               className="border border-zinc-300 rounded w-full p-2 mt-4"
               type="text"
-              defaultValue={user?.address.line2 || ""}
+              defaultValue={user?.address?.line2 || ""}
               {...register("address.line2")}
             />
           </div>
@@ -244,13 +230,10 @@ const UpdateProfile = () => {
 
       <hr className="bg-zinc-400 border-none h-[1px]" />
 
-      {/* Basic Information */}
       <div className="flex flex-col">
         <p className="text-neutral-500 underline mt-3">BASIC INFORMATION</p>
         <div className="grid grid-cols-[1fr_3fr] gap-y-2.5 mt-3 text-neutral-700">
           <p className="font-medium">Gender:</p>
-
-          {/* Gender Select */}
           <div>
             <select
               className="border border-zinc-300 rounded w-full p-2 mt-4"
@@ -264,12 +247,11 @@ const UpdateProfile = () => {
               <p className="text-red-500 block">{errors.gender.message}</p>
             )}
           </div>
-          {/* Date of Birth Input */}
           <p className="font-medium">Birthday:</p>
           <input
             className="border border-zinc-300 rounded w-full p-2 mt-4"
             type="date"
-            defaultValue={user?.dob.toString().substring(0, 10)} // Format date for date input
+            defaultValue={user?.dob ? user.dob.toString().substring(0, 10) : ""}
             {...register("dob")}
           />
           {errors.dob && (
@@ -287,6 +269,8 @@ const UpdateProfile = () => {
         </button>
       </div>
     </form>
+  ) : (
+    <p>Loading user data...</p>
   );
 };
 
