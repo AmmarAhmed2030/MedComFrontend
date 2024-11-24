@@ -76,6 +76,7 @@ const UpdateProfile = () => {
       const formData = new FormData();
 
       formData.append("name", data.name);
+      formData.append("phone", data.phone);
       formData.append("address", JSON.stringify(data.address));
       formData.append("gender", data.gender);
       formData.append("dob", data.dob.toISOString());
