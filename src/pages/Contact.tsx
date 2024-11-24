@@ -1,4 +1,5 @@
 import { assets } from "../assets/assets_frontend/assets";
+import Image from "../components/Image";
 
 const Contact = () => {
   return (
@@ -9,11 +10,7 @@ const Contact = () => {
         </p>
       </div>
       <div className="my-10 flex flex-col md:flex-row justify-center m:flex-row gap-10 mb-28 text-sm">
-        <img
-          src={assets.contact_image}
-          alt=""
-          className="w-full md:max-w-[360px]"
-        />
+        <Image src={assets.contact_image} className="w-full md:max-w-[360px]" />
         <div className="flex flex-col justify-center items-start gap-6">
           <p className="font-semibold text-lg text-gray-600">OUR OFFICE</p>
           <p className="text-gray-500">

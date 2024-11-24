@@ -1,5 +1,5 @@
 import { assets } from "../assets/assets_frontend/assets";
-
+import { motion } from "framer-motion";
 const NewHeader = () => {
   return (
     <div className="flex flex-col md:flex-row flex-wrap mb-10 md:mb-0">
@@ -28,7 +28,16 @@ const NewHeader = () => {
         </a>
       </div>
       {/* right side */}
-      <div className="w-full md:w-1/3 pt-20 relative mx-auto">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.5 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{
+          duration: 0.8,
+          delay: 0.5,
+          ease: [0, 0.71, 0.2, 1.01],
+        }}
+        className="w-full md:w-1/3 pt-20 relative mx-auto"
+      >
         {/* First Image */}
         <img
           className="w-80 mx-auto relative md:absolute md:top-24  md:right-8 lg:top"
@@ -42,7 +51,7 @@ const NewHeader = () => {
           alt=""
           className="w-64 sm:w-72 z-10 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-auto rounded-lg"
         />
-      </div>
+      </motion.div>
     </div>
   );
 };

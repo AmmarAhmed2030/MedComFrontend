@@ -2,7 +2,7 @@ import { assets } from "../assets/assets_frontend/assets";
 import { useNavigate } from "react-router-dom";
 import { useAuthUser } from "../zustand/store";
 import { useEffect } from "react";
-
+import { motion } from "framer-motion";
 const MyProfile = () => {
   const navigate = useNavigate();
   const { user, getProfile } = useAuthUser();
@@ -11,8 +11,15 @@ const MyProfile = () => {
   }, [getProfile]);
   return (
     <div className="max-w-2xl flex flex-col gap-2 text-sm mx-auto">
-      <img
+      <motion.img
         className="w-36 rounded"
+        initial={{ opacity: 0, scale: 0.5 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{
+          duration: 0.8,
+          delay: 0.5,
+          ease: [0, 0.71, 0.2, 1.01],
+        }}
         src={user?.image ? `${user?.image}` : `${assets.upload_area}`}
         alt=""
       />
