@@ -9,7 +9,7 @@ const About = () => {
           ABOUT <span className="text-gray-700 font-medium">US</span>
         </p>
       </div>
-      <div className="my-10 flex flex-col md:flex-row gap-12">
+      <div className="my-10 flex flex-col md:flex-row md:justify-end gap-12">
         <Image src={assets.about_image} className="w-full md:max-w-[360px]" />
         <div className="flex flex-col justify-center gap-6 md:w-2/4 text-sm text-gray-600">
           <p>

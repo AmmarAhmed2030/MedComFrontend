@@ -100,16 +100,24 @@ const Navbar = () => {
             </div>
           </div>
         ) : (
-          <button
-            onClick={() => navigate("/login")}
-            className="bg-primary text-white px-8 py-3 rounded-full font-light hidden md:block"
-          >
-            Create account
-          </button>
+          <>
+            <Link
+              to={`${adminURL}/login`}
+              className="bg-primary text-white font-light  px-8 py-3 rounded-full hidden xl:block"
+            >
+              Login as Doctor
+            </Link>
+            <button
+              onClick={() => navigate("/login")}
+              className="bg-primary text-white px-8 py-3 rounded-full font-light hidden xl:block"
+            >
+              Create account
+            </button>
+          </>
         )}
         <img
           onClick={() => setShowMenue(true)}
-          className="w-6 md:hidden"
+          className="w-6 xl:hidden cursor-pointer"
           src={assets.menu_icon}
           alt=""
         />
@@ -117,12 +125,12 @@ const Navbar = () => {
         <div
           className={` ${
             showMenue ? "fixed w-full" : "h-0 w-0"
-          } md:hidden right-0 top-0 bottom-0 z-20 overflow-hidden bg-white transition-all`}
+          } xl:hidden right-0 top-0 bottom-0 z-20 overflow-hidden bg-white transition-all`}
         >
           <div className="flex items-center justify-between px-5 py-6">
             <img src={assets.logo} alt="" className="w-36" />
             <img
-              className="w-7"
+              className="w-7 cursor-pointer"
               onClick={() => setShowMenue(false)}
               src={assets.cross_icon}
               alt=""
@@ -140,6 +148,12 @@ const Navbar = () => {
             </NavLink>
             <NavLink to={"/contact"} onClick={() => setShowMenue(false)}>
               <p className="px-4 py-2 rounded inline-block">CONTACT</p>
+            </NavLink>
+            <NavLink
+              to={`${adminURL}/login`}
+              onClick={() => setShowMenue(false)}
+            >
+              <p className="px-4 py-2 rounded inline-block">Login as Doctor</p>
             </NavLink>
           </ul>
         </div>
