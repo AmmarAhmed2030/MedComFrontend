@@ -75,7 +75,8 @@ export const useDoctors = create<DoctorsState>((set) => ({
       set({ loadingSearchedDoctors: true });
 
       const response = await axios.get(
-        `${backendURL}/api/doctor/search-doctors/${name}/${speciality}/${available}`
+        `${backendURL}/api/doctor/search-doctors/${name}/${speciality}/${available}`,
+        { withCredentials: true }
       );
       if (response && response.data) {
         const { data } = response.data;
@@ -110,7 +111,8 @@ export const useDoctors = create<DoctorsState>((set) => ({
       set({ loading: true });
 
       const response = await axios.get(
-        `${backendURL}/api/doctor/get-Doctor/${id}`
+        `${backendURL}/api/doctor/get-Doctor/${id}`,
+        { withCredentials: true }
       );
       if (response && response.data) {
         const { data } = response.data;
@@ -144,7 +146,9 @@ export const useDoctors = create<DoctorsState>((set) => ({
     try {
       set({ loading: true });
 
-      const response = await axios.get(`${backendURL}/api/doctor/get-doctors`);
+      const response = await axios.get(`${backendURL}/api/doctor/get-doctors`, {
+        withCredentials: true,
+      });
       if (response && response.data) {
         const { data } = response.data;
 
@@ -178,7 +182,8 @@ export const useDoctors = create<DoctorsState>((set) => ({
       set({ loading: true });
 
       const response = await axios.get(
-        `${backendURL}/api/doctor/get-doctors/${id}/${speciality}`
+        `${backendURL}/api/doctor/get-doctors/${id}/${speciality}`,
+        { withCredentials: true }
       );
       if (response && response.data) {
         const { data } = response.data;
@@ -213,7 +218,8 @@ export const useDoctors = create<DoctorsState>((set) => ({
       set({ loading: true });
 
       const response = await axios.get(
-        `${backendURL}/api/doctor/get-doctors/${speciality}`
+        `${backendURL}/api/doctor/get-doctors/${speciality}`,
+        { withCredentials: true }
       );
       if (response && response.data) {
         const { data } = response.data;
@@ -253,10 +259,14 @@ export const useAuthUser = create<UserState>((set) => ({
   loginUser: async (email, password) => {
     try {
       set({ loading: true });
-      const response = await axios.post(`${backendURL}/api/user/login`, {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        `${backendURL}/api/user/login`,
+        {
+          email,
+          password,
+        },
+        { withCredentials: true }
+      );
       if (response && response.data) {
         const { token, user } = response.data;
         set({ loading: false, userToken: token, user });
@@ -291,6 +301,7 @@ export const useAuthUser = create<UserState>((set) => ({
         `${backendURL}/api/user/get-profile`,
         {},
         {
+          withCredentials: true,
           headers: {
             Authorization: `Bearer ${localStorage.getItem("userToken")}`,
           },

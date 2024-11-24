@@ -54,7 +54,7 @@ const MyProfile = () => {
           <p className="font-medium">Birthday:</p>
 
           <p className="text-blue-400">
-            {user?.dob ? user?.dob : "Not Selected"}
+            {user?.dob ? user?.dob.toString().substring(0, 10) : "Not Selected"}
           </p>
         </div>
       </div>

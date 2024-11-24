@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -6,6 +6,8 @@ import { useAuthUser } from "../zustand/store";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Loader from "../components/Loader";
+import { assets } from "../assets/assets_frontend/assets";
 
 enum Gender {
   Male = "Male",
@@ -53,9 +55,11 @@ const updateProfileSchema = yup.object().shape({
 const UpdateProfile = () => {
   const navigate = useNavigate();
   const [docImg, setDocImg] = useState<File | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  const { user, userToken, setUser } = useAuthUser(); // Fetch Zustand state and updateProfile function
-
+  const [updateLoading, setUpdateLoading] = useState<boolean>(false);
+  const { user, userToken, setUser, getProfile, loading } = useAuthUser(); // Fetch Zustand state and updateProfile function
+  useEffect(() => {
+    getProfile();
+  }, [getProfile]);
   const {
     register,
     handleSubmit,
@@ -79,7 +83,7 @@ const UpdateProfile = () => {
       }
 
       const backendURL = import.meta.env.VITE_BACKEND_URL;
-      setLoading(true);
+      setUpdateLoading(true);
       const response = await axios.patch(
         `${backendURL}/api/user/update-profile`,
         formData,
@@ -100,12 +104,12 @@ const UpdateProfile = () => {
         image: response.data.image || user?.image, // You can update the image URL from the response if needed
       });
       toast.success("Profile Updated successfully");
-      setLoading(false);
+      setUpdateLoading(false);
 
       navigate("/my-profile");
       console.log("Profile Updated successfully:", response.data);
     } catch (error: unknown) {
-      setLoading(false);
+      setUpdateLoading(false);
 
       // Check if the error is an AxiosError
       if (axios.isAxiosError(error)) {
@@ -140,18 +144,28 @@ const UpdateProfile = () => {
     }
   };
 
-  return (
+  return loading ? (
+    <Loader />
+  ) : (
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="max-w-2xl flex flex-col gap-2 text-sm mx-auto"
     >
       <div className="flex items-center gap-4 mb-8 text-gray-500">
         <label htmlFor="doc-img">
-          <img
-            src={docImg ? URL.createObjectURL(docImg) : user?.image}
-            alt="Profile"
-            className="w-16 h-16 bg-green-300 rounded-full cursor-pointer"
-          />
+          {!docImg && !user?.image ? (
+            <img
+              src={assets.upload_area}
+              alt=""
+              className="w-16 h-16  rounded-full cursor-pointer"
+            />
+          ) : (
+            <img
+              src={docImg ? URL.createObjectURL(docImg) : user?.image}
+              alt=""
+              className="w-16 h-16  rounded-full cursor-pointer"
+            />
+          )}
         </label>
         <input
           type="file"
@@ -269,7 +283,7 @@ const UpdateProfile = () => {
           type="submit"
           className="py-2 px-6 bg-green-500 text-white rounded-full mt-8"
         >
-          {loading ? "Saving..." : "Save Changes"}
+          {updateLoading ? "Saving..." : "Save Changes"}
         </button>
       </div>
     </form>
